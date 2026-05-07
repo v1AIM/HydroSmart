@@ -3,346 +3,603 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HydroSmart - Smart Hydration Tracking</title>
+    <title>HydroSmart™ — Elevate Your Hydration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ═══════════════════════════════
+           DESIGN TOKENS
+        ═══════════════════════════════ */
+        :root {
+            --ink: #0D1F2D;
+            --deep: #064E6B;
+            --primary: #0A7EA4;
+            --mid: #1899C2;
+            --accent: #00BCD4;
+            --pale: #E6F5FA;
+            --palest: #F2FAFE;
+            --white: #FFFFFF;
+            --gold: #E8A820;
+            --gold-light: #F9C846;
+            --coral: #E84C4D;
+            --muted: #6B8FA0;
+            --success: #00A86B;
+            --border: rgba(0, 188, 212, 0.15);
+            --card: rgba(255, 255, 255, 0.97);
+            --radius-sm: 10px;
+            --radius: 18px;
+            --radius-lg: 28px;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        :root {
-            --primary: #0A7EA4;
-            --primary-dark: #064E6B;
-            --accent: #00BCD4;
-            --gold: #E8A820;
-            --light-bg: #F2FAFE;
-            --white: #FFFFFF;
-            --text-dark: #0D1F2D;
-            --text-muted: #6B8FA0;
-            --success: #00A86B;
-            --border: #E0F2F7;
+        /* ═══════════════════════════════
+           RESET & DEFAULTS
+        ═══════════════════════════════ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            color: var(--text-dark);
-            line-height: 1.6;
+            font-family: 'Outfit', sans-serif;
+            color: var(--ink);
+            background: var(--white);
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* ═══════════════════════════════
+           TYPOGRAPHY
+        ═══════════════════════════════ */
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            line-height: 1.12;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 9vw, 3.6rem);
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
+            font-weight: 700;
+        }
+
+        h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        h3 {
+            font-size: clamp(1rem, 3.5vw, 1.25rem);
+        }
+
+        p {
+            line-height: 1.75;
+            font-weight: 300;
+            color: var(--muted);
+        }
+
+        /* ═══════════════════════════════
+           LAYOUT
+        ═══════════════════════════════ */
         .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 22px;
+        }
+
+        .container-wide {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 22px;
         }
 
-        /* ========== NAVIGATION ========== */
+        .section {
+            padding: 80px 0;
+        }
+
+        /* ═══════════════════════════════
+           ANIMATIONS
+        ═══════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+        }
+
+        .reveal.up {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .d1 { transition-delay: 0.07s; }
+        .d2 { transition-delay: 0.14s; }
+        .d3 { transition-delay: 0.21s; }
+        .d4 { transition-delay: 0.28s; }
+        .d5 { transition-delay: 0.35s; }
+        .d6 { transition-delay: 0.42s; }
+
+        /* ═══════════════════════════════
+           NAVIGATION
+        ═══════════════════════════════ */
         nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(10, 126, 164, 0.98);
-            backdrop-filter: blur(10px);
-            padding: 16px 0;
-            border-bottom: 1px solid rgba(0, 188, 212, 0.2);
-        }
-
-        nav .container {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 62px;
+            background: rgba(6, 78, 107, 0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0, 188, 212, 0.12);
+            transition: background 0.3s;
         }
 
-        .logo {
-            font-size: 1.5rem;
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--white);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            letter-spacing: -0.01em;
         }
 
-        .logo span {
+        .nav-logo em {
             color: var(--accent);
+            font-style: normal;
         }
 
         .nav-links {
             display: flex;
-            gap: 32px;
+            gap: 22px;
             align-items: center;
-            list-style: none;
         }
 
         .nav-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 0.82rem;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: color 0.2s;
         }
 
         .nav-links a:hover {
             color: var(--white);
         }
 
-        .nav-cta {
-            background: var(--gold);
-            color: var(--text-dark);
-            padding: 10px 24px;
+        .nav-btn {
+            background: var(--gold-light);
+            color: var(--ink);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 9px 20px;
             border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            font-size: 0.95rem;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(232, 168, 32, 0.3);
+        .nav-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 4px 18px rgba(249, 200, 70, 0.4);
         }
 
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
+
+            .nav-btn {
+                font-size: 0.75rem;
+                padding: 8px 16px;
+            }
         }
 
-        /* ========== HERO SECTION ========== */
+        /* ═══════════════════════════════
+           HERO SECTION
+        ═══════════════════════════════ */
         .hero {
-            margin-top: 62px;
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-            color: var(--white);
-            padding: 80px 0;
-            text-align: center;
-        }
-
-        .hero-content h1 {
-            font-size: clamp(2.2rem, 6vw, 3.5rem);
-            margin-bottom: 20px;
-            font-weight: 700;
-            line-height: 1.1;
-        }
-
-        .hero-content p {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
+            min-height: 100svh;
+            padding: 100px 22px 64px;
             display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 60px;
-        }
-
-        .btn-primary {
-            background: var(--gold);
-            color: var(--text-dark);
-            padding: 14px 40px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(232, 168, 32, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            padding: 14px 40px;
-            border: 2px solid var(--white);
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background: var(--white);
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .hero-image {
-            position: relative;
-            height: 400px;
-            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-top: 40px;
-        }
-
-        .hero-image img {
-            max-height: 100%;
-            width: auto;
-            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2));
-        }
-
-        /* ========== FEATURES SECTION ========== */
-        section {
-            padding: 80px 0;
-        }
-
-        .section-title {
+            background: linear-gradient(170deg, #021520 0%, #042E40 40%, #064E6B 100%);
+            position: relative;
+            overflow: hidden;
             text-align: center;
-            margin-bottom: 60px;
         }
 
-        .section-title h2 {
-            font-size: clamp(2rem, 5vw, 2.5rem);
-            margin-bottom: 16px;
-            color: var(--primary);
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 188, 212, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 188, 212, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
         }
 
-        .section-title p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 500px;
-            margin: 0 auto;
+        .hero-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 188, 212, 0.12);
+            border: 1px solid rgba(0, 188, 212, 0.28);
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            padding: 7px 18px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.04em;
+            margin-bottom: 24px;
+        }
+
+        .hero-chip i {
+            font-size: 0.7rem;
+        }
+
+        .hero h1 {
+            color: var(--white);
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 .hl {
+            color: var(--accent);
+        }
+
+        .hero-sub {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.55);
+            font-style: italic;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 32px;
+            margin-top: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin: 8px 0 32px;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.65);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-img img {
+            width: 100%;
+            display: block;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .hero-img-badge {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            background: rgba(6, 30, 40, 0.82);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 188, 212, 0.25);
+            border-radius: 50px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--white);
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .hero-img-badge i {
+            color: var(--accent);
+        }
+
+        .btn-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--gold);
+            color: var(--ink);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 18px 32px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(232, 168, 32, 0.35);
+            animation: hPulse 2.6s ease-in-out infinite;
+            transition: transform 0.2s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-hero:hover {
+            transform: scale(1.03);
+            animation: none;
+            box-shadow: 0 10px 36px rgba(232, 168, 32, 0.5);
+        }
+
+        @keyframes hPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(232, 168, 32, 0.45);
+            }
+            50% {
+                box-shadow: 0 0 0 14px rgba(232, 168, 32, 0);
+            }
+        }
+
+        .hero-trust {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+        }
+
+        .trust-item i {
+            color: var(--accent);
+            font-size: 0.72rem;
+        }
+
+        /* ═══════════════════════════════
+           STATS STRIP
+        ═══════════════════════════════ */
+        .stats-strip {
+            background: var(--primary);
+            padding: 28px 22px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.65);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        /* ═══════════════════════════════
+           FEATURES SECTION
+        ═══════════════════════════════ */
+        .features {
+            background: var(--palest);
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 32px;
-            margin-bottom: 60px;
+            grid-template-columns: 1fr;
+            gap: 18px;
         }
 
         .feature-card {
-            background: var(--light-bg);
-            padding: 40px 32px;
-            border-radius: 16px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border);
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(10, 126, 164, 0.10);
+            transition: all 0.3s var(--ease);
         }
 
         .feature-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(10, 126, 164, 0.15);
-            border-color: var(--accent);
+            box-shadow: 0 12px 50px rgba(10, 126, 164, 0.15);
         }
 
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
+        .feature-card img {
+            width: 100%;
+            display: block;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+        }
+
+        .feature-body {
+            padding: 24px 22px;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            background: var(--pale);
+            color: var(--primary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
         }
 
         .feature-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 12px;
-            color: var(--text-dark);
+            margin-bottom: 8px;
+            color: var(--ink);
         }
 
         .feature-card p {
-            color: var(--text-muted);
             font-size: 0.95rem;
+            margin-bottom: 0;
         }
 
-        /* ========== PRODUCTS SECTION ========== */
-        .products-section {
-            background: var(--light-bg);
+        /* ═══════════════════════════════
+           PRODUCTS SECTION
+        ═══════════════════════════════ */
+        .products {
+            background: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            font-size: 1.05rem;
+            margin: 0 auto;
+            max-width: 450px;
         }
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 28px;
+            grid-template-columns: 1fr;
+            gap: 24px;
         }
 
         .product-card {
-            background: var(--white);
-            border-radius: 16px;
+            background: var(--card);
+            border-radius: var(--radius);
             overflow: hidden;
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 20px rgba(10, 126, 164, 0.08);
+            transition: all 0.3s var(--ease);
             border: 1px solid var(--border);
         }
 
         .product-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 16px 40px rgba(10, 126, 164, 0.12);
+            box-shadow: 0 12px 40px rgba(10, 126, 164, 0.12);
         }
 
         .product-image {
-            background: linear-gradient(135deg, #f5f9fb 0%, #e6f5fa 100%);
-            height: 300px;
+            background: linear-gradient(135deg, #E6F5FA 0%, #F2FAFE 100%);
+            aspect-ratio: 1;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
             overflow: hidden;
         }
 
         .product-image img {
-            max-height: 100%;
-            width: auto;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
 
         .product-info {
-            padding: 24px;
+            padding: 22px;
         }
 
         .product-info h3 {
-            font-size: 1.15rem;
             margin-bottom: 8px;
+            color: var(--ink);
         }
 
         .product-info p {
-            font-size: 0.9rem;
-            margin-bottom: 16px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
         }
 
-        /* ========== APP FEATURES SECTION ========== */
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* ═══════════════════════════════
+           APP SECTION
+        ═══════════════════════════════ */
         .app-section {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            grid-template-columns: 1fr;
+            gap: 40px;
             align-items: center;
         }
 
+        .app-content h2 {
+            margin-bottom: 8px;
+        }
+
         .app-content h3 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            color: var(--text-dark);
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 24px;
+            font-weight: 500;
         }
 
         .app-features {
-            list-style: none;
             margin-bottom: 30px;
         }
 
         .app-features li {
             display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
-            color: var(--text-muted);
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: flex-start;
+            color: var(--muted);
+            font-size: 0.95rem;
         }
 
-        .app-features li:before {
-            content: "✓";
-            font-weight: 700;
+        .app-features li::before {
+            content: '✓';
             color: var(--success);
+            font-weight: 800;
             font-size: 1.2rem;
             flex-shrink: 0;
+            margin-top: -2px;
         }
 
         .app-image {
@@ -353,99 +610,107 @@
             max-width: 100%;
             height: auto;
             box-shadow: 0 20px 50px rgba(10, 126, 164, 0.2);
-            border-radius: 16px;
+            border-radius: var(--radius);
         }
 
-        @media (max-width: 768px) {
-            .app-section {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ========== STATS SECTION ========== */
-        .stats-section {
-            background: var(--primary);
-            color: var(--white);
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            text-align: center;
-        }
-
-        .stat {
-            padding: 30px 0;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            opacity: 0.85;
-        }
-
-        /* ========== CTA SECTION ========== */
-        .cta-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        /* ═══════════════════════════════
+           CTA SECTION
+        ═══════════════════════════════ */
+        .cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--deep) 100%);
             color: var(--white);
             text-align: center;
-            padding: 80px 0;
         }
 
-        .cta-section h2 {
-            font-size: clamp(2rem, 5vw, 2.8rem);
-            margin-bottom: 24px;
+        .cta h2 {
             color: var(--white);
+            margin-bottom: 12px;
         }
 
-        .cta-section p {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 40px;
+        .cta p {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.05rem;
+            margin-bottom: 32px;
             max-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* ========== FOOTER ========== */
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--ink);
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s var(--ease);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(232, 168, 32, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            padding: 14px 36px;
+            border: 2px solid var(--white);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s var(--ease);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* ═══════════════════════════════
+           FOOTER
+        ═══════════════════════════════ */
         footer {
-            background: var(--text-dark);
-            color: rgba(255, 255, 255, 0.7);
+            background: var(--ink);
+            color: rgba(255, 255, 255, 0.6);
             padding: 60px 0 20px;
         }
 
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 40px;
             margin-bottom: 40px;
         }
 
         .footer-section h4 {
             color: var(--white);
-            margin-bottom: 16px;
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
         }
 
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section li {
-            margin-bottom: 10px;
+        .footer-section ul li {
+            margin-bottom: 8px;
         }
 
         .footer-section a {
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.7);
-            transition: color 0.3s ease;
+            color: rgba(255, 255, 255, 0.6);
             font-size: 0.9rem;
+            transition: color 0.2s;
         }
 
         .footer-section a:hover {
@@ -456,40 +721,22 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 30px;
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
-        /* ========== ANIMATIONS ========== */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        /* ========== RESPONSIVE ========== */
+        /* ═══════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════ */
         @media (max-width: 768px) {
-            section {
+            .section {
                 padding: 60px 0;
             }
 
             .hero {
-                padding: 60px 0;
+                padding: 80px 22px 50px;
             }
 
-            .hero-image {
-                height: 300px;
-            }
-
-            .features-grid {
+            .app-section {
                 grid-template-columns: 1fr;
             }
 
@@ -497,13 +744,22 @@
                 grid-template-columns: 1fr;
             }
 
-            .stats-section {
-                grid-template-columns: 1fr;
-                gap: 30px;
+            .stats-strip {
+                padding: 20px 22px;
+                gap: 15px;
             }
 
-            .nav-links {
-                display: none;
+            .stat-num {
+                font-size: 1.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
             }
         }
     </style>
@@ -511,164 +767,175 @@
 <body>
     <!-- NAVIGATION -->
     <nav>
-        <div class="container">
-            <div class="logo">
-                💧 <span>HydroSmart</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#app">App</a></li>
-                <li><a href="#contact"><button class="nav-cta">Get Started</button></a></li>
-            </ul>
+        <div class="nav-logo">
+            💧 <em>HydroSmart</em>
         </div>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#app">App</a></li>
+            <li><button class="nav-btn">Get Started</button></li>
+        </ul>
     </nav>
 
     <!-- HERO SECTION -->
     <section class="hero">
-        <div class="container">
-            <div class="hero-content fade-in">
-                <h1>Stay Hydrated. Stay Smart.</h1>
-                <p>Track your daily hydration with AI-powered insights. HydroSmart bottles with intelligent app integration help you reach your wellness goals.</p>
-                <div class="hero-buttons">
-                    <button class="btn-primary">Shop Now</button>
-                    <button class="btn-secondary">Watch Demo</button>
+        <div class="container reveal">
+            <div class="hero-chip">
+                <i class="fas fa-star-fill"></i> Premium Hydration Solution
+            </div>
+            <h1>Elevate Your <span class="hl">Hydration</span></h1>
+            <p class="hero-sub">Smart bottles. Intelligent tracking. Real results.</p>
+
+            <div class="hero-img">
+                <img src="hydrosmart.png" alt="HydroSmart Bottles">
+                <div class="hero-img-badge">
+                    <i class="fas fa-check-circle"></i> #1 Hydration Tracker
                 </div>
             </div>
-            <div class="hero-image">
-                <img src="hydrosmart.png" alt="HydroSmart Bottles">
+
+            <button class="btn-hero">
+                <i class="fas fa-shopping-cart"></i> Shop Now
+            </button>
+
+            <div class="hero-trust">
+                <div class="trust-item">
+                    <i class="fas fa-users"></i> 150K+ Active Users
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-star"></i> 4.8/5 Rating
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-award"></i> Award Winning
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- STATS STRIP -->
+    <div class="stats-strip">
+        <div class="stat-item">
+            <div class="stat-num">2.5M+</div>
+            <div class="stat-label">Bottles Sold</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">98%</div>
+            <div class="stat-label">Satisfaction</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">150K+</div>
+            <div class="stat-label">Active Users</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">24/7</div>
+            <div class="stat-label">Support</div>
+        </div>
+    </div>
+
     <!-- FEATURES SECTION -->
-    <section id="features">
+    <section class="features section" id="features">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title reveal">
                 <h2>Why Choose HydroSmart?</h2>
-                <p>The complete hydration solution for health-conscious individuals</p>
+                <p>The complete hydration solution for health-conscious living</p>
             </div>
+
             <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">📱</div>
-                    <h3>Smart Tracking</h3>
-                    <p>Real-time hydration monitoring through our mobile app with personalized reminders</p>
+                <div class="feature-card reveal d1">
+                    <img src="hydro 2.png" alt="Smart Tracking">
+                    <div class="feature-body">
+                        <span class="feature-tag">Technology</span>
+                        <h3>Real-Time Tracking</h3>
+                        <p>AI-powered hydration monitoring synced across all your devices.</p>
+                    </div>
                 </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🌡️</div>
-                    <h3>Temperature Control</h3>
-                    <p>Maintains optimal drinking temperature with advanced insulation technology</p>
+
+                <div class="feature-card reveal d2">
+                    <img src="hydro 3.png" alt="Temperature Control">
+                    <div class="feature-body">
+                        <span class="feature-tag">Premium</span>
+                        <h3>Smart Materials</h3>
+                        <p>Advanced insulation keeps drinks at perfect temperature all day.</p>
+                    </div>
                 </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">📊</div>
-                    <h3>Health Analytics</h3>
-                    <p>Detailed hydration reports, streak tracking, and wellness insights</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Personalized Goals</h3>
-                    <p>AI-powered recommendations tailored to your lifestyle and activity level</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">♻️</div>
-                    <h3>Eco-Friendly</h3>
-                    <p>Premium materials built to last, reducing single-use plastic waste</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🔗</div>
-                    <h3>Ecosystem Integration</h3>
-                    <p>Syncs with Apple Health, Google Fit, and popular fitness trackers</p>
+
+                <div class="feature-card reveal d3">
+                    <img src="hydro 4.png" alt="Health Analytics">
+                    <div class="feature-body">
+                        <span class="feature-tag">Analytics</span>
+                        <h3>Health Insights</h3>
+                        <p>Detailed reports and personalized recommendations based on your habits.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- PRODUCTS SECTION -->
-    <section id="products" class="products-section">
+    <section class="products section" id="products">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title reveal">
                 <h2>Our Collection</h2>
-                <p>Sleek designs, premium quality, and smart technology</p>
+                <p>Premium bottles designed for your lifestyle</p>
             </div>
+
             <div class="products-grid">
-                <div class="product-card">
+                <div class="product-card reveal d1">
                     <div class="product-image">
-                        <img src="hydro 2.png" alt="HydroSmart Classic">
+                        <img src="hydro 2.png" alt="Classic Edition">
                     </div>
                     <div class="product-info">
                         <h3>Classic Edition</h3>
-                        <p>Timeless design with essential smart features. Perfect for everyday hydration.</p>
-                        <strong>$49.99</strong>
+                        <p>Timeless design with essential smart features for everyday use.</p>
+                        <div class="product-price">$49.99</div>
                     </div>
                 </div>
-                <div class="product-card">
+
+                <div class="product-card reveal d2">
                     <div class="product-image">
-                        <img src="hydro 3.png" alt="HydroSmart Pro">
+                        <img src="hydro 3.png" alt="Pro Edition">
                     </div>
                     <div class="product-info">
                         <h3>Pro Edition</h3>
-                        <p>Advanced tracking with premium materials. For fitness enthusiasts.</p>
-                        <strong>$79.99</strong>
+                        <p>Advanced tracking with premium materials. Perfect for active lifestyles.</p>
+                        <div class="product-price">$79.99</div>
                     </div>
                 </div>
-                <div class="product-card">
+
+                <div class="product-card reveal d3">
                     <div class="product-image">
-                        <img src="hydro 4.png" alt="HydroSmart Max">
+                        <img src="hydro 4.png" alt="Max Edition">
                     </div>
                     <div class="product-info">
                         <h3>Max Edition</h3>
-                        <p>Ultimate hydration solution with all premium features and largest capacity.</p>
-                        <strong>$99.99</strong>
+                        <p>Ultimate hydration with all premium features and largest capacity.</p>
+                        <div class="product-price">$99.99</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- STATS SECTION -->
-    <section class="stats-section">
-        <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; width: 100%;">
-                <div class="stat">
-                    <div class="stat-number">150K+</div>
-                    <div class="stat-label">Active Users</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">2.5M</div>
-                    <div class="stat-label">Bottles Sold</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Satisfaction Rate</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">4.8/5</div>
-                    <div class="stat-label">App Rating</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- APP FEATURES SECTION -->
-    <section id="app">
-        <div class="container">
+    <!-- APP SECTION -->
+    <section class="section" id="app" style="background: var(--palest);">
+        <div class="container-wide">
             <div class="app-section">
-                <div class="app-content">
-                    <h2>Mobile App Features</h2>
+                <div class="app-content reveal">
+                    <h2>Mobile App</h2>
                     <h3>Your personal hydration coach</h3>
                     <ul class="app-features">
-                        <li>Real-time hydration tracking</li>
-                        <li>AI-powered health insights</li>
-                        <li>Customizable daily goals</li>
-                        <li>Achievement badges & streaks</li>
+                        <li>Real-time hydration tracking and insights</li>
+                        <li>AI-powered personalized recommendations</li>
+                        <li>Customizable daily hydration goals</li>
+                        <li>Achievement badges and streaks</li>
                         <li>Social challenges with friends</li>
-                        <li>Integration with health apps</li>
-                        <li>Detailed wellness reports</li>
-                        <li>Medication reminders</li>
+                        <li>Integration with Apple Health & Google Fit</li>
+                        <li>Detailed wellness analytics</li>
+                        <li>24/7 premium support included</li>
                     </ul>
                     <button class="btn-primary">Download App</button>
                 </div>
-                <div class="app-image">
+                <div class="app-image reveal">
                     <img src="hydro 5.png" alt="HydroSmart App">
                 </div>
             </div>
@@ -676,11 +943,11 @@
     </section>
 
     <!-- CTA SECTION -->
-    <section id="contact" class="cta-section">
-        <div class="container">
-            <h2>Ready to Transform Your Hydration?</h2>
-            <p>Join thousands of users already enjoying better health through smart hydration tracking</p>
-            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+    <section class="cta section">
+        <div class="container reveal">
+            <h2>Ready to Transform Your Health?</h2>
+            <p>Join thousands of users achieving their hydration goals with HydroSmart</p>
+            <div class="cta-buttons">
                 <button class="btn-primary">Shop Now</button>
                 <button class="btn-secondary">Learn More</button>
             </div>
@@ -689,21 +956,21 @@
 
     <!-- FOOTER -->
     <footer>
-        <div class="container">
+        <div class="container-wide">
             <div class="footer-content">
                 <div class="footer-section">
                     <h4>Product</h4>
                     <ul>
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Pricing</a></li>
                         <li><a href="#">Bottles</a></li>
                         <li><a href="#">App</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Features</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Company</h4>
                     <ul>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">About</a></li>
                         <li><a href="#">Blog</a></li>
                         <li><a href="#">Careers</a></li>
                         <li><a href="#">Press</a></li>
@@ -729,37 +996,33 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 HydroSmart. All rights reserved. | Designed for health-conscious living 💧</p>
+                <p>&copy; 2024 HydroSmart™. All rights reserved. | Elevate Your Hydration 💧</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Smooth scroll for anchor links
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });
 
-        // Intersection Observer for fade-in animations
+        // Reveal animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                    observer.unobserve(entry.target);
+                    entry.target.classList.add('up');
                 }
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.feature-card, .product-card').forEach(el => {
+        document.querySelectorAll('.reveal').forEach(el => {
             observer.observe(el);
         });
     </script>
